@@ -2,7 +2,7 @@
 
 
 
-**The personal portfolio of Utkarsh Kumar Nigam.** He's a CSE (AI) student at Parul University and an AI Intern at InternVision Technology.
+
 
 [![Live site](https://img.shields.io/badge/live-utkarshkumarnigam--lab.github.io-f2f2f2?style=for-the-badge&labelColor=0a0a0a)](https://utkarshkumarnigam-lab.github.io)
 [![LinkedIn](https://img.shields.io/badge/linkedin-utkarshkumarnigam-f2f2f2?style=for-the-badge&labelColor=0a0a0a&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/utkarshkumarnigam/)
