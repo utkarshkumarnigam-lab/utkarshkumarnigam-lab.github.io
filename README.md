@@ -1,6 +1,6 @@
 <div align="center">
 
-# utkarshkumarnigam-lab.github.io
+
 
 **The personal portfolio of Utkarsh Kumar Nigam.** He's a CSE (AI) student at Parul University and an AI Intern at InternVision Technology.
 
