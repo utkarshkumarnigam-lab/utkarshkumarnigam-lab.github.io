@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Utkarsh Kumar Nigam — AI Engineer</title>
+<meta name="description" content="Utkarsh Kumar Nigam — CSE (AI) student at Parul University and AI Intern. Projects in generative AI, agentic AI and full-stack development.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='21' text-anchor='middle' font-family='monospace' font-weight='700' font-size='14' fill='%23f2f2f2'>UK</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #111111;
+    --bg-3: #171717;
+    --line: #262626;
+    --line-2: #3a3a3a;
+    --text: #f2f2f2;
+    --muted: #8f8f8f;
+    --dim: #5c5c5c;
+    --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+    --sans: Geist, system-ui, -apple-system, sans-serif;
+    --max: 1200px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--text); color: var(--bg); }
+  img { display: block; max-width: 100%; }
+
+  /* grain overlay */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* progress bar */
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--text); z-index: 60; }
+
+  /* custom cursor */
+  .cur, .cur-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 90; border-radius: 50%; mix-blend-mode: difference; }
+  .cur { width: 6px; height: 6px; background: #fff; margin: -3px 0 0 -3px; }
+  .cur-ring { width: 34px; height: 34px; border: 1px solid #fff; margin: -17px 0 0 -17px; transition: width .25s, height .25s, margin .25s, background .25s; }
+  .cur-ring.hover { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: #fff; }
+  @media (pointer: coarse) { .cur, .cur-ring { display: none; } }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+  .mono { font-family: var(--mono); }
+
+  /* ---------- nav ---------- */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    border-bottom: 1px solid transparent; transition: background .3s, border-color .3s;
+  }
+  header.nav.solid { background: rgba(10,10,10,.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color: var(--line); }
+  .nav-in { max-width: var(--max); margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; font: 13px var(--mono); }
+  .brand { display: flex; align-items: center; gap: 10px; letter-spacing: .5px; }
+  .brand .sq { width: 10px; height: 10px; background: var(--text); animation: spin 6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .nav ul { display: flex; gap: 28px; list-style: none; color: var(--muted); }
+  .nav ul a { position: relative; transition: color .2s; }
+  .nav ul a:hover { color: var(--text); }
+  .nav ul a::before { content: "["; opacity: 0; margin-right: 3px; transition: opacity .2s; }
+  .nav ul a::after { content: "]"; opacity: 0; margin-left: 3px; transition: opacity .2s; }
+  .nav ul a:hover::before, .nav ul a:hover::after { opacity: 1; }
+  .nav .clock { color: var(--muted); }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; border-bottom: 1px solid var(--line); }
+  #ascii { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, rgba(10,10,10,.92) 0%, rgba(10,10,10,.55) 45%, rgba(10,10,10,.15) 80%); pointer-events: none; }
+  .hero-in { position: relative; z-index: 2; max-width: var(--max); margin: 0 auto; width: 100%; padding: 140px 32px 40px; display: grid; grid-template-columns: 1fr 340px; gap: 56px; align-items: end; }
+  .tagline { font: 13px var(--mono); color: var(--muted); margin-bottom: 22px; display: flex; gap: 10px; align-items: center; }
+  .tagline .blink { width: 8px; height: 14px; background: var(--text); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero h1 { font-weight: 600; font-size: clamp(54px, 7.4vw, 120px); line-height: .92; letter-spacing: -0.045em; }
+  .hero h1 .ln { display: block; white-space: nowrap; }
+  .hero h1 .ln.outline { color: transparent; -webkit-text-stroke: 1.5px var(--text); }
+  .hero .sub { margin-top: 28px; max-width: 560px; color: var(--muted); font-size: 18px; }
+  .hero .sub b { color: var(--text); font-weight: 500; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .btn { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; font: 500 13px var(--mono); letter-spacing: .3px; border: 1px solid var(--line-2); background: var(--bg); overflow: hidden; isolation: isolate; transition: color .35s, border-color .35s; }
+  .btn::before { content: ""; position: absolute; inset: 0; background: var(--text); transform: translateY(101%); transition: transform .35s cubic-bezier(.7,0,.2,1); z-index: -1; }
+  .btn:hover { color: var(--bg); border-color: var(--text); }
+  .btn:hover::before { transform: none; }
+  .btn.solid { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .btn.solid::before { background: var(--bg); }
+  .btn.solid:hover { color: var(--text); }
+
+  .win { border: 1px solid var(--line-2); background: var(--bg-2); }
+  .win-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--line-2); font: 11px var(--mono); color: var(--muted); }
+  .win-bar .dots { display: flex; gap: 6px; }
+  .win-bar .dots i { width: 9px; height: 9px; border: 1px solid var(--dim); border-radius: 50%; }
+  .gif { filter: grayscale(1) contrast(1.15); transition: filter .5s; }
+  .gif:hover, .win:hover .gif, .gif-card:hover .gif { filter: grayscale(0) contrast(1); }
+  .win .gif { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .win-foot { padding: 8px 12px; font: 11px var(--mono); color: var(--muted); border-top: 1px solid var(--line-2); display: flex; justify-content: space-between; }
+
+  .hero-foot { position: relative; z-index: 2; max-width: var(--max); margin: 0 auto; width: 100%; padding: 18px 32px 26px; display: flex; justify-content: space-between; font: 12px var(--mono); color: var(--muted); border-top: 1px solid var(--line); }
+  .hero-foot .down { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(4px); } }
+
+  /* ---------- marquee ---------- */
+  .marquee { border-bottom: 1px solid var(--line); overflow: hidden; padding: 18px 0; font: 500 clamp(18px, 2.4vw, 28px) var(--sans); letter-spacing: -.02em; white-space: nowrap; }
+  .marquee + .marquee { padding-top: 0; border-top: 0; }
+  .track { display: inline-flex; gap: 0; animation: slide 38s linear infinite; }
+  .marquee.rev .track { animation-direction: reverse; color: var(--dim); }
+  .track span { padding: 0 22px; display: inline-flex; align-items: center; gap: 44px; }
+  .track span::after { content: "✕"; font-size: .5em; color: var(--dim); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  section { padding: 120px 0; border-bottom: 1px solid var(--line); }
+  .sec-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 14px 40px; margin-bottom: 64px; }
+  .sec-head .idx { grid-column: 1 / -1; }
+  .sec-head .idx { font: 13px var(--mono); color: var(--muted); }
+  .sec-head h2 { font-weight: 600; font-size: clamp(38px, 6vw, 80px); letter-spacing: -.04em; line-height: 1; }
+  .sec-head p { font: 13px var(--mono); color: var(--muted); max-width: 320px; padding-bottom: 8px; }
+  @media (max-width: 700px) { .sec-head { grid-template-columns: 1fr; } }
+
+  /* about */
+  .about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: start; }
+  .about .big { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.35; letter-spacing: -.02em; font-weight: 400; }
+  .about .big .hl { color: var(--muted); }
+  .about .big u { text-decoration: none; background: linear-gradient(var(--text), var(--text)) 0 100% / 0 1px no-repeat; transition: background-size .8s; }
+  .about .big.in u { background-size: 100% 1px; }
+  .spec { margin-top: 40px; border-top: 1px solid var(--line); font: 13px var(--mono); }
+  .spec div { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .spec dt { color: var(--muted); }
+  .about .win .gif { aspect-ratio: 1/1; }
+
+  /* work */
+  .proj { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding: 56px 0; border-top: 1px solid var(--line); align-items: center; }
+  .proj:last-child { border-bottom: 1px solid var(--line); }
+  .proj-meta { display: flex; gap: 14px; font: 12px var(--mono); color: var(--muted); margin-bottom: 18px; flex-wrap: wrap; }
+  .proj-meta span { border: 1px solid var(--line-2); padding: 3px 9px; }
+  .proj h3 { font-size: clamp(32px, 4.4vw, 56px); font-weight: 600; letter-spacing: -.035em; line-height: 1; }
+  .proj .kick { margin-top: 10px; color: var(--muted); font-size: 17px; }
+  .proj p { margin-top: 20px; color: #c4c4c4; max-width: 540px; }
+  .proj ul { margin-top: 16px; list-style: none; max-width: 540px; color: var(--muted); font-size: 15px; }
+  .proj li { padding: 7px 0 7px 26px; position: relative; border-top: 1px dashed var(--line); }
+  .proj li::before { content: "→"; position: absolute; left: 0; color: var(--dim); font-family: var(--mono); }
+  .stack { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack span { font: 12px var(--mono); color: var(--muted); background: var(--bg-3); padding: 4px 9px; }
+  .proj .btns { margin-top: 26px; }
+  .viz { border: 1px solid var(--line-2); background: var(--bg-2); position: relative; }
+  .viz canvas { display: block; width: 100%; aspect-ratio: 4/3; }
+  .viz .cap { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border-top: 1px solid var(--line-2); font: 11px var(--mono); color: var(--muted); }
+  .viz .hud { position: absolute; top: 12px; left: 14px; right: 14px; display: flex; justify-content: space-between; font: 11px var(--mono); color: var(--muted); pointer-events: none; }
+  .proj:nth-child(even) .viz { order: -1; }
+
+  /* nyayasetu score viz (DOM) */
+  .score { aspect-ratio: 4/3; padding: 44px 22px 18px; display: flex; flex-direction: column; justify-content: space-between; }
+  .score .num { font: 600 64px/1 var(--sans); letter-spacing: -.04em; display: flex; align-items: baseline; gap: 8px; }
+  .score .num small { font: 13px var(--mono); color: var(--muted); letter-spacing: 0; }
+  .bars { display: grid; gap: 9px; font: 11px var(--mono); color: var(--muted); }
+  .bar { display: grid; grid-template-columns: 150px 1fr 30px; gap: 10px; align-items: center; }
+  .bar .t { height: 6px; background: var(--bg-3); position: relative; overflow: hidden; }
+  .bar .f { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--text); transition: width 1s cubic-bezier(.6,0,.2,1); }
+  .bar b { font-weight: 400; color: var(--text); text-align: right; }
+  .excluded { font: 11px var(--mono); color: var(--dim); border-top: 1px dashed var(--line-2); padding-top: 10px; }
+  .excluded s { color: var(--dim); }
+
+  /* usua chat viz */
+  .chat { aspect-ratio: 4/3; padding: 44px 18px 18px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; overflow: hidden; }
+  .msg { max-width: 82%; padding: 10px 14px; font-size: 14px; line-height: 1.45; border: 1px solid var(--line-2); opacity: 0; transform: translateY(10px); transition: opacity .4s, transform .4s; }
+  .msg.show { opacity: 1; transform: none; }
+  .msg.me { align-self: flex-end; background: var(--text); color: var(--bg); border-color: var(--text); }
+  .msg.ai { align-self: flex-start; background: var(--bg-3); }
+  .typing i { display: inline-block; width: 6px; height: 6px; margin-right: 4px; background: var(--muted); border-radius: 50%; animation: dot 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 50% { opacity: .2; transform: translateY(-3px); } }
+
+  /* experience */
+  .rows { border-top: 1px solid var(--line); }
+  .row { position: relative; display: grid; grid-template-columns: 160px 1fr auto; gap: 24px; padding: 30px 12px; border-bottom: 1px solid var(--line); align-items: baseline; isolation: isolate; transition: color .35s; }
+  .row::before { content: ""; position: absolute; inset: 0; background: var(--text); transform: scaleY(0); transform-origin: bottom; transition: transform .4s cubic-bezier(.7,0,.2,1); z-index: -1; }
+  .row:hover { color: var(--bg); }
+  .row:hover::before { transform: scaleY(1); }
+  .row:hover .muted { color: #444; }
+  .row .when { font: 13px var(--mono); }
+  .row h3 { font-size: clamp(20px, 2.4vw, 28px); font-weight: 500; letter-spacing: -.02em; }
+  .row .muted { color: var(--muted); font-size: 15px; margin-top: 4px; transition: color .35s; }
+  .row .tag { font: 12px var(--mono); }
+  .row a.tag { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* terminal */
+  .term-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
+  .term-wrap .lead { font-size: clamp(22px, 2.4vw, 30px); letter-spacing: -.02em; line-height: 1.3; }
+  .term-wrap .lead + p { margin-top: 18px; color: var(--muted); }
+  .hint { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .hint button { font: 12px var(--mono); color: var(--muted); background: none; border: 1px solid var(--line-2); padding: 6px 11px; cursor: pointer; transition: color .2s, border-color .2s; }
+  .hint button:hover { color: var(--text); border-color: var(--text); }
+  .term { border: 1px solid var(--line-2); background: #050505; font: 13.5px/1.65 var(--mono); }
+  .term-body { height: 380px; overflow-y: auto; padding: 16px 18px; cursor: text; }
+  .term-body .o { color: #bdbdbd; white-space: pre-wrap; word-break: break-word; }
+  .term-body .o a { text-decoration: underline; text-underline-offset: 3px; }
+  .term-body .dimmed { color: var(--dim); }
+  .term-line { display: flex; gap: 8px; }
+  .term-line .ps { color: var(--muted); white-space: nowrap; }
+  .term-line input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; color: var(--text); font: inherit; caret-color: var(--text); }
+
+  /* gif strip */
+  .gifs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .gif-card { border: 1px solid var(--line-2); background: var(--bg-2); transition: transform .4s; }
+  .gif-card:hover { transform: translateY(-6px) rotate(-.6deg); }
+  .gif-card:nth-child(even):hover { transform: translateY(-6px) rotate(.6deg); }
+  .gif-card .gif { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+  .gif-card p { padding: 10px 12px; font: 12px var(--mono); color: var(--muted); border-top: 1px solid var(--line-2); }
+
+  /* contact */
+  .contact { text-align: left; }
+  .contact .huge { display: block; font-weight: 600; font-size: clamp(40px, 8.6vw, 128px); letter-spacing: -.05em; line-height: .95; }
+  .contact .huge .outline { color: transparent; -webkit-text-stroke: 1.5px var(--text); transition: color .4s; }
+  .contact .huge:hover .outline { color: var(--text); }
+  .mailrow { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .mailrow .addr { font: clamp(16px, 2vw, 22px) var(--mono); border-bottom: 1px solid var(--text); padding-bottom: 4px; overflow-wrap: anywhere; }
+  .copy { font: 12px var(--mono); background: none; color: var(--muted); border: 1px solid var(--line-2); padding: 7px 12px; cursor: pointer; }
+  .copy:hover { color: var(--text); border-color: var(--text); }
+  .socials { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .socials a { position: relative; padding: 22px 4px; font: 14px var(--mono); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--muted); transition: color .25s, padding .25s; }
+  .socials a + a { border-left: 1px solid var(--line); padding-left: 18px; }
+  .socials a:hover { color: var(--text); padding-left: 26px; }
+
+  footer { padding: 28px 0 40px; font: 12px var(--mono); color: var(--dim); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  /* reveal */
+  .rv { opacity: 0; transform: translateY(30px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+
+  /* responsive */
+  @media (max-width: 960px) {
+    .hero-in { grid-template-columns: 1fr; }
+    .hero-in .win { display: none; }
+    .about, .proj, .term-wrap { grid-template-columns: 1fr; gap: 36px; }
+    .proj:nth-child(even) .viz { order: 0; }
+    .gifs { grid-template-columns: repeat(2, 1fr); }
+    .nav ul { display: none; }
+    .row { grid-template-columns: 1fr; gap: 6px; }
+    .socials { grid-template-columns: 1fr 1fr; }
+    .socials a:nth-child(3) { border-left: 0; padding-left: 4px; }
+  }
+  @media (max-width: 560px) {
+    .hero::before { background: linear-gradient(180deg, rgba(10,10,10,.35) 0%, rgba(10,10,10,.88) 40%, rgba(10,10,10,.95) 100%); }
+    .wrap, .nav-in, .hero-in, .hero-foot { padding-left: 16px; padding-right: 16px; }
+    section { padding: 80px 0; }
+    .sec-head { margin-bottom: 40px; }
+    .hero h1 { font-size: 15vw; }
+    .hero .sub { font-size: 16px; }
+    .bar { grid-template-columns: 112px 1fr 26px; }
+    .score .num { font-size: 48px; }
+    .spec div { grid-template-columns: 110px 1fr; }
+    .term-body { height: 320px; }
+    .btn { flex: 1 1 auto; justify-content: center; }
+    .gifs { gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    .rv { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="cur"></div><div class="cur-ring"></div>
+
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a href="#" class="brand"><span class="sq"></span>UKN.dev</a>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#work">work</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#terminal">terminal</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+    <span class="clock" id="clock">IST --:--:--</span>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <canvas id="ascii" aria-hidden="true"></canvas>
+  <div class="hero-in">
+    <div>
+      <div class="tagline"><span class="blink"></span><span data-scramble>AI ENGINEER · GENERATIVE &amp; AGENTIC AI</span></div>
+      <h1><span class="ln" data-scramble>Utkarsh</span><span class="ln outline" data-scramble>Kumar Nigam</span></h1>
+      <p class="sub">CSE (AI) student at <b>Parul University</b> and AI Intern at <b>InternVision Technology</b>. I build AI systems end-to-end, from OCR pipelines and semantic search to the apps people actually use.</p>
+      <div class="btns">
+        <a class="btn solid" href="#work">see the work ↓</a>
+        <a class="btn" href="Utkarsh_Kumar_Nigam_Resume.pdf" target="_blank" rel="noopener">résumé.pdf ↗</a>
+        <a class="btn" href="https://github.com/utkarshkumarnigam-lab" target="_blank" rel="noopener">github ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/utkarshkumarnigam/" target="_blank" rel="noopener">linkedin ↗</a>
+      </div>
+    </div>
+    <div class="win">
+      <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span>~/live-feed.gif</span><span>●&nbsp;rec</span></div>
+      <img class="gif" src="https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif" alt="Code scrolling on a screen">
+      <div class="win-foot"><span>status: compiling ideas</span><span id="fps">--</span></div>
+    </div>
+  </div>
+  <div class="hero-foot"><span>Vadodara, IN — 22.31° N, 73.18° E</span><span>scroll <span class="down">↓</span></span></div>
+</div>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true"><div class="track" id="m1"></div></div>
+<div class="marquee rev" aria-hidden="true"><div class="track" id="m2"></div></div>
+
+<main>
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[01] — whoami</span><h2 data-scramble>About</h2></div>
+    <div class="about">
+      <div>
+        <p class="big rv">I'm a computer science student who learns by <u>building things</u>. <span class="hl">This year that meant</span> a case-tracking platform for Indian courts, <span class="hl">a data science app where you can</span> watch gradient descent happen, <span class="hl">a Gemini chat client, and</span> a browser game with no game engine.</p>
+        <dl class="spec rv">
+          <div><dt>location</dt><dd>Vadodara, Gujarat, India</dd></div>
+          <div><dt>education</dt><dd>B.Tech CSE (Artificial Intelligence), Parul University, '29</dd></div>
+          <div><dt>currently</dt><dd>AI Intern @ InternVision Technology Pvt. Ltd.</dd></div>
+          <div><dt>focus</dt><dd>LLMs · agents · RAG · full-stack AI apps</dd></div>
+          <div><dt>looking for</dt><dd>AI/ML or software engineering internships</dd></div>
+        </dl>
+      </div>
+      <div class="win rv">
+        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span>~/me.exe</span><span>v2026</span></div>
+        <img class="gif" src="https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif" alt="Cartoon of a person typing on a retro computer" loading="lazy">
+        <div class="win-foot"><span>actual footage of me at 2am</span><span>hover → color</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[02] — ls ./projects</span><h2 data-scramble>Selected work</h2><p>Each panel is a small live sketch of what the project does, not just a screenshot.</p></div>
+
+    <!-- NyayaSetu -->
+    <article class="proj">
+      <div class="rv">
+        <div class="proj-meta"><span>01</span><span>aug 2026</span><span>SIH · PS 1282</span></div>
+        <h3>NyayaSetu</h3>
+        <div class="kick">AI-driven judicial operations platform</div>
+        <p>Undertrial prisoners in India can wait years for a hearing because their case falls through the cracks. NyayaSetu helps court and prison staff see which cases need attention, with a 0–100 score made from six factors anyone can inspect.</p>
+        <ul>
+          <li>Tesseract OCR on FIRs and charge sheets, with semantic search in Qdrant</li>
+          <li>Case Q&amp;A grounded in source documents, with [S1] [S2] citations</li>
+          <li>10 analytics views with CSV/PDF export, role-based access and an audit log</li>
+        </ul>
+        <div class="stack"><span>python</span><span>fastapi</span><span>postgresql</span><span>redis</span><span>qdrant</span><span>react</span><span>typescript</span><span>docker</span></div>
+        <div class="btns"><a class="btn" href="https://github.com/utkarshkumarnigam-lab/NyayaSetu" target="_blank" rel="noopener">source ↗</a></div>
+      </div>
+      <div class="viz rv">
+        <div class="hud"><span id="caseId">CASE #UT-0000</span><span>attention engine</span></div>
+        <div class="score">
+          <div class="num"><span id="scoreNum">0</span><small>/ 100 attention score</small></div>
+          <div class="bars" id="bars"></div>
+          <div class="excluded">excluded by design: <s>gender</s> <s>caste</s> <s>religion</s> <s>nationality</s></div>
+        </div>
+        <div class="cap"><span>fig.01 — six explainable factors</span><span>sample data</span></div>
+      </div>
+    </article>
+
+    <!-- LUKA -->
+    <article class="proj">
+      <div class="rv">
+        <div class="proj-meta"><span>02</span><span>jun 2026</span><span>live</span></div>
+        <h3>LUKA</h3>
+        <div class="kick">DataSense AI: data science you can watch</div>
+        <p>Reading about gradient descent didn't make it click for me, so I built a place to watch it. Models train one frame at a time, so the regression line or decision boundary moves as the loss drops. It's like the sketch on the right, but with real datasets.</p>
+        <ul>
+          <li>Tune learning rate, epochs and polynomial degree, or upload your own CSV</li>
+          <li>Five-stage curriculum with quizzes and an AI mentor (offline or Gemini)</li>
+        </ul>
+        <div class="stack"><span>vanilla js</span><span>chart.js</span><span>gemini api</span><span>no backend</span></div>
+        <div class="btns"><a class="btn solid" href="https://utkarshkumarnigam-lab.github.io/LUKA/" target="_blank" rel="noopener">try it ↗</a><a class="btn" href="https://github.com/utkarshkumarnigam-lab/LUKA" target="_blank" rel="noopener">source ↗</a></div>
+      </div>
+      <div class="viz rv">
+        <div class="hud"><span id="gdEpoch">epoch 0</span><span id="gdLoss">mse —</span></div>
+        <canvas id="gd"></canvas>
+        <div class="cap"><span>fig.02 — linear regression via gradient descent</span><span>live</span></div>
+      </div>
+    </article>
+
+    <!-- AIKI -->
+    <article class="proj">
+      <div class="rv">
+        <div class="proj-meta"><span>03</span><span>jul 2026</span><span>playable</span></div>
+        <h3>AIKI</h3>
+        <div class="kick">Endless runner with no canvas, no engine and no audio files</div>
+        <p>I wanted to see how far plain React could go as a game engine. Every obstacle is a positioned DOM element, the loop is one custom hook on <span class="mono">requestAnimationFrame</span>, and all the music is synthesised live with Web Audio oscillators.</p>
+        <ul>
+          <li>Three levels with drones, lasers, shields and an overclock power-up</li>
+          <li>Upgrades and achievements saved between runs</li>
+        </ul>
+        <div class="stack"><span>react 19</span><span>vite</span><span>web audio api</span></div>
+        <div class="btns"><a class="btn solid" href="https://aiki-three.vercel.app" target="_blank" rel="noopener">play it ↗</a><a class="btn" href="https://github.com/utkarshkumarnigam-lab/AIKI" target="_blank" rel="noopener">source ↗</a></div>
+      </div>
+      <div class="viz rv">
+        <div class="hud"><span id="runScore">score 0000</span><span>click / tap to jump</span></div>
+        <canvas id="runner"></canvas>
+        <div class="cap"><span>fig.03 — a tiny runner, playable right here</span><span>auto-pilot on</span></div>
+      </div>
+    </article>
+
+    <!-- Usua -->
+    <article class="proj">
+      <div class="rv">
+        <div class="proj-meta"><span>04</span><span>jul 2026</span><span>live</span></div>
+        <h3>Usua</h3>
+        <div class="kick">A small chat client for Google Gemini</div>
+        <p>A ChatGPT-style interface with a sidebar of past chats. A tiny Node.js server proxies requests to Gemini so the API key never reaches the browser. Conversations are stored locally and cleaned up automatically after 12 days.</p>
+        <div class="stack"><span>node.js</span><span>javascript</span><span>gemini api</span></div>
+        <div class="btns"><a class="btn solid" href="https://utkarshkumarnigam-lab.github.io/Usua/" target="_blank" rel="noopener">try it ↗</a><a class="btn" href="https://github.com/utkarshkumarnigam-lab/Usua" target="_blank" rel="noopener">source ↗</a></div>
+      </div>
+      <div class="viz rv">
+        <div class="hud"><span>usua://chat</span><span>gemini · proxied</span></div>
+        <div class="chat" id="chat"></div>
+        <div class="cap"><span>fig.04 — key stays server-side</span><span>demo loop</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[03] — git log --career</span><h2 data-scramble>Experience</h2></div>
+    <div class="rows">
+      <div class="row rv"><span class="when">sep–nov 2026</span><div><h3>AI Intern · InternVision Technology Pvt. Ltd.</h3><div class="muted">Generative AI and agentic AI projects: building task-oriented AI systems and applying them to real problems with the team.</div></div><span class="tag">internship</span></div>
+      <div class="row rv"><span class="when">2026</span><div><h3>Smart India Hackathon 2026</h3><div class="muted">Built NyayaSetu with my team for problem statement 1282 (Ministry of Law &amp; Justice).</div></div><span class="tag">hackathon</span></div>
+      <div class="row rv"><span class="when">2025–2029</span><div><h3>B.Tech CSE (AI) · Parul University</h3><div class="muted">Vadodara, Gujarat.</div></div><span class="tag">education</span></div>
+      <div class="row rv"><span class="when">cert</span><div><h3>Cloudscape Kickstart with Cloud Native</h3><div class="muted">Cloud-native fundamentals.</div></div><a class="tag" href="https://drive.google.com/file/d/1Sr0oBOnGFtcU0URlNIdvc_1rXjpR9e9o/view?usp=drivesdk" target="_blank" rel="noopener">view ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TERMINAL ============ -->
+<section id="terminal">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[04] — ./interactive</span><h2 data-scramble>Terminal</h2></div>
+    <div class="term-wrap">
+      <div class="rv">
+        <p class="lead">Prefer the command line? Ask the shell instead of scrolling.</p>
+        <p>It's a small fake shell. Type a command or tap one below.</p>
+        <div class="hint" id="hints"></div>
+      </div>
+      <div class="term rv">
+        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span>utkarsh@portfolio: ~</span><span>zsh</span></div>
+        <div class="term-body" id="termBody">
+          <div class="o dimmed">Last login: <span id="lastLogin"></span> on ttys001</div>
+          <div class="o">Welcome! Type <b>help</b> to get started.</div>
+          <div class="term-line"><span class="ps">utkarsh@portfolio:~$</span><input id="termIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GIFS ============ -->
+<section id="runtime">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[05] — /dev/null</span><h2 data-scramble>Runtime log</h2><p>The parts of building software that don't make it into the README.</p></div>
+    <div class="gifs">
+      <figure class="gif-card rv"><img class="gif" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Cat typing furiously on a laptop" loading="lazy"><p>&gt; fixing the bug I wrote 5 min ago</p></figure>
+      <figure class="gif-card rv"><img class="gif" src="https://media.giphy.com/media/4FQMuOKR6zQRO/giphy.gif" alt="Retro LOADING screen" loading="lazy"><p>&gt; npm install</p></figure>
+      <figure class="gif-card rv"><img class="gif" src="https://media.giphy.com/media/1C8bHHJturSx2/giphy.gif" alt="Pixel-art coder at a computer" loading="lazy"><p>&gt; when the build finally passes</p></figure>
+      <figure class="gif-card rv"><img class="gif" src="https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif" alt="Cat typing on a laptop" loading="lazy"><p>&gt; prompting the LLM, again</p></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="idx">[06] — ping</span></div>
+    <a class="huge rv" href="mailto:utkarshkumarnigam@gmail.com">Let's build<br><span class="outline">something.</span></a>
+    <div class="mailrow rv">
+      <a class="addr" href="mailto:utkarshkumarnigam@gmail.com">utkarshkumarnigam@gmail.com</a>
+      <button class="copy" id="copy" type="button">copy</button>
+    </div>
+    <div class="socials rv">
+      <a href="https://github.com/utkarshkumarnigam-lab" target="_blank" rel="noopener">github <span>↗</span></a>
+      <a href="https://www.linkedin.com/in/utkarshkumarnigam/" target="_blank" rel="noopener">linkedin <span>↗</span></a>
+      <a href="mailto:utkarshkumarnigam@gmail.com">email <span>↗</span></a>
+      <a href="Utkarsh_Kumar_Nigam_Resume.pdf" target="_blank" rel="noopener">résumé <span>↗</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Utkarsh Kumar Nigam</span><span>last commit: nov 2026 · made with html, css &amp; too much chai</span></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+  const DPR = Math.min(devicePixelRatio || 1, 2);
+
+  /* ---------- clock (IST) ---------- */
+  const clock = $('#clock');
+  const tick = () => { clock.textContent = 'IST ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false }); };
+  tick(); setInterval(tick, 1000);
+  $('#lastLogin').textContent = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  /* ---------- nav + progress ---------- */
+  const nav = $('#nav'), prog = $('#progress');
+  const onScroll = () => {
+    nav.classList.toggle('solid', scrollY > 40);
+    const h = document.documentElement.scrollHeight - innerHeight;
+    prog.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* ---------- custom cursor ---------- */
+  const cur = $('.cur'), ring = $('.cur-ring');
+  let cx = -100, cy = -100, rx = -100, ry = -100;
+  addEventListener('pointermove', e => { cx = e.clientX; cy = e.clientY; cur.style.transform = `translate(${cx}px,${cy}px)`; }, { passive: true });
+  (function follow() { rx += (cx - rx) * .18; ry += (cy - ry) * .18; ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(follow); })();
+  document.addEventListener('pointerover', e => ring.classList.toggle('hover', !!e.target.closest('a, button, #runner')));
+
+  /* ---------- text scramble ---------- */
+  const glyphs = '!<>-_\\/[]{}—=+*^?#01';
+  function scramble(el) {
+    if (el._busy) return; const final = el.dataset.final || (el.dataset.final = el.textContent); if (reduce) return; el._busy = true;
+    let frame = 0; const len = final.length;
+    const q = [...final].map((ch, i) => ({ ch, start: Math.floor(Math.random() * 12), end: 12 + Math.floor(Math.random() * 18) + i }));
+    (function step() {
+      let out = '', done = 0;
+      q.forEach(o => {
+        if (frame >= o.end || o.ch === ' ') { out += o.ch; done++; }
+        else if (frame >= o.start) out += glyphs[Math.floor(Math.random() * glyphs.length)];
+        else out += ' ';
+      });
+      el.textContent = out;
+      if (done < len) { frame++; requestAnimationFrame(step); } else { el.textContent = final; el._busy = false; }
+    })();
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-scramble]').forEach(scramble);
+    if (e.target.matches('[data-scramble]')) scramble(e.target);
+    io.unobserve(e.target);
+  }), { threshold: .15 });
+  document.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
+  document.querySelectorAll('.hero [data-scramble]').forEach(scramble);
+
+  /* ---------- marquee ---------- */
+  const w1 = ['Python','FastAPI','React','TypeScript','Node.js','PostgreSQL','Qdrant','Docker','Gemini API','Redis','Tesseract OCR'];
+  const w2 = ['Generative AI','Agentic AI','LLMs','RAG','Semantic Search','Machine Learning','Java','C++','MongoDB','Git','Vercel'];
+  const fill = (el, words) => { const s = words.map(w => `<span>${w}</span>`).join(''); el.innerHTML = s + s; };
+  fill($('#m1'), w1); fill($('#m2'), w2);
+
+  /* ---------- helper: canvas sizing + visibility-gated loop ---------- */
+  function setupCanvas(cv) {
+    const ctx = cv.getContext('2d');
+    const fit = () => { const r = cv.getBoundingClientRect(); cv.width = r.width * DPR; cv.height = r.height * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); cv._w = r.width; cv._h = r.height; };
+    fit(); addEventListener('resize', fit);
+    return ctx;
+  }
+  function loopWhenVisible(el, fn) {
+    let on = false, id;
+    const run = t => { fn(t); if (on && !reduce) id = requestAnimationFrame(run); };
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on) { cancelAnimationFrame(id); id = requestAnimationFrame(run); } }).observe(el);
+    if (reduce) requestAnimationFrame(fn);
+  }
+
+  /* ---------- hero ASCII field ---------- */
+  (() => {
+    const cv = $('#ascii'), ctx = setupCanvas(cv);
+    const ramp = ' .·:-=+*#%@';
+    let mx = -9999, my = -9999, last = 0, frames = 0, fpsT = 0;
+    const fpsEl = $('#fps');
+    cv.parentElement.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+    cv.parentElement.addEventListener('pointerleave', () => { mx = my = -9999; });
+    loopWhenVisible(cv, t => {
+      if (t - last < 33) return; last = t;
+      frames++; if (t - fpsT > 1000) { fpsEl.textContent = frames + ' fps'; frames = 0; fpsT = t; }
+      const W = cv._w, H = cv._h, cw = 11, ch = 17, cols = Math.ceil(W / cw), rows = Math.ceil(H / ch), T = t * .0004;
+      ctx.clearRect(0, 0, W, H);
+      ctx.font = '13px "Geist Mono", monospace'; ctx.textBaseline = 'top';
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const px = x * cw, py = y * ch;
+          let v = Math.sin(x * .09 + T * 3) * Math.cos(y * .13 - T * 2) + Math.sin((x + y) * .05 + T * 4) * .6 + Math.sin(Math.hypot(x - cols * .7, y - rows * .35) * .18 - T * 6) * .5;
+          const d = Math.hypot(px - mx, py - my);
+          if (d < 180) v += (1 - d / 180) * 2.2 * Math.sin(d * .06 - T * 18);
+          v = (v + 2.1) / 4.2;
+          const i = Math.max(0, Math.min(ramp.length - 1, Math.floor(v * ramp.length)));
+          if (i === 0) continue;
+          ctx.fillStyle = `rgba(242,242,242,${.08 + v * .32})`;
+          ctx.fillText(ramp[i], px, py);
+        }
+      }
+    });
+  })();
+
+  /* ---------- NyayaSetu score viz ---------- */
+  (() => {
+    const factors = [['detention duration', .26], ['adjournment freq.', .18], ['hearing gap', .18], ['hearing urgency', .16], ['legal aid status', .12], ['case inactivity', .10]];
+    const bars = $('#bars');
+    bars.innerHTML = factors.map(([n]) => `<div class="bar"><span>${n}</span><span class="t"><span class="f"></span></span><b>0</b></div>`).join('');
+    const fills = bars.querySelectorAll('.f'), vals = bars.querySelectorAll('b'), num = $('#scoreNum'), cid = $('#caseId');
+    let shown = 0;
+    function next() {
+      const v = factors.map(() => Math.round(15 + Math.random() * 85));
+      const score = Math.round(v.reduce((s, x, i) => s + x * factors[i][1], 0));
+      cid.textContent = 'CASE #UT-' + String(Math.floor(1000 + Math.random() * 8999));
+      v.forEach((x, i) => { fills[i].style.width = x + '%'; vals[i].textContent = x; });
+      const from = shown, t0 = performance.now();
+      (function count() { const k = Math.max(0, Math.min(1, (performance.now() - t0) / 1000)); shown = Math.round(from + (score - from) * (1 - Math.pow(1 - k, 3))); num.textContent = shown; if (k < 1) requestAnimationFrame(count); })();
+    }
+    let timer;
+    new IntersectionObserver(([e]) => { clearInterval(timer); if (e.isIntersecting) { next(); if (!reduce) timer = setInterval(next, 3200); } }).observe(bars);
+  })();
+
+  /* ---------- LUKA gradient descent ---------- */
+  (() => {
+    const cv = $('#gd'), ctx = setupCanvas(cv), ep = $('#gdEpoch'), ls = $('#gdLoss');
+    let pts, w, b, epoch, hold;
+    function reset() {
+      const tw = .3 + Math.random() * .5, tb = .1 + Math.random() * .15;
+      pts = Array.from({ length: 46 }, () => { const x = Math.random(); return [x, tw * x + tb + (Math.random() - .5) * .2]; });
+      w = -0.6 + Math.random() * .4; b = .85; epoch = 0; hold = 0;
+    }
+    reset();
+    loopWhenVisible(cv, () => {
+      const W = cv._w, H = cv._h, pad = 34, sx = x => pad + x * (W - pad * 2), sy = y => H - pad - y * (H - pad * 2);
+      let mse = 0;
+      if (hold === 0) {
+        let dw = 0, db = 0;
+        for (const [x, y] of pts) { const e = (w * x + b) - y; dw += e * x; db += e; mse += e * e; }
+        const n = pts.length; mse /= n; w -= .35 * 2 * dw / n; b -= .35 * 2 * db / n; epoch++;
+        if (epoch > 260) hold = 1;
+      } else { for (const [x, y] of pts) mse += ((w * x + b) - y) ** 2; mse /= pts.length; if (++hold > 90) reset(); }
+      ctx.clearRect(0, 0, W, H);
+      // grid
+      ctx.strokeStyle = '#1f1f1f'; ctx.lineWidth = 1;
+      for (let i = 0; i <= 10; i++) { const gx = sx(i / 10), gy = sy(i / 10); ctx.beginPath(); ctx.moveTo(gx, pad); ctx.lineTo(gx, H - pad); ctx.moveTo(pad, gy); ctx.lineTo(W - pad, gy); ctx.stroke(); }
+      // residuals
+      ctx.strokeStyle = '#3a3a3a';
+      for (const [x, y] of pts) { ctx.beginPath(); ctx.moveTo(sx(x), sy(y)); ctx.lineTo(sx(x), sy(w * x + b)); ctx.stroke(); }
+      // points
+      ctx.fillStyle = '#9a9a9a';
+      for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(sx(x), sy(y), 3, 0, 7); ctx.fill(); }
+      // line
+      ctx.strokeStyle = '#f2f2f2'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sx(0), sy(b)); ctx.lineTo(sx(1), sy(w + b)); ctx.stroke();
+      ep.textContent = 'epoch ' + epoch + (hold ? ' · converged' : '');
+      ls.textContent = 'mse ' + mse.toFixed(4) + '  w=' + w.toFixed(2) + ' b=' + b.toFixed(2);
+    });
+  })();
+
+  /* ---------- AIKI runner ---------- */
+  (() => {
+    const cv = $('#runner'), ctx = setupCanvas(cv), sc = $('#runScore');
+    let p, obs, speed, score, dist, dead, deadT, stars;
+    function reset() { p = { y: 0, vy: 0 }; obs = []; speed = 4; score = 0; dist = 260; dead = false; deadT = 0; stars = stars || Array.from({ length: 40 }, () => [Math.random(), Math.random() * .6, Math.random()]); }
+    reset();
+    const jump = () => { if (dead) { reset(); return; } if (p.y === 0) p.vy = 11; };
+    cv.addEventListener('pointerdown', jump);
+    loopWhenVisible(cv, () => {
+      const W = cv._w, H = cv._h, G = H * .76, px = W * .18, S = 22;
+      if (!dead) {
+        p.vy -= .6; p.y = Math.max(0, p.y + p.vy); if (p.y === 0) p.vy = Math.max(0, p.vy);
+        speed = Math.min(9, speed + .0025); score += speed * .05;
+        dist -= speed; if (dist <= 0) { const tall = Math.random() < .35; obs.push({ x: W + 20, w: 14 + Math.random() * 14, h: tall ? 46 : 24 + Math.random() * 12, fly: !tall && Math.random() < .25 }); dist = 170 + Math.random() * 230; }
+        obs.forEach(o => o.x -= speed); obs = obs.filter(o => o.x > -60);
+        // autopilot
+        const nx = obs.find(o => o.x + o.w > px);
+        if (nx && !nx.fly && nx.x - px < speed * 15 && nx.x - px > 0 && p.y === 0) p.vy = 11;
+        // collision
+        for (const o of obs) {
+          const oy = o.fly ? G - o.h - 52 : G - o.h, top = G - S - p.y;
+          if (px + S > o.x && px < o.x + o.w && top + S > oy && top < oy + o.h) { dead = true; }
+        }
+      } else if (++deadT > 70) reset();
+      ctx.clearRect(0, 0, W, H);
+      // stars (parallax)
+      ctx.fillStyle = '#3a3a3a';
+      stars.forEach(s => { s[0] -= .0006 * speed * (s[2] + .2); if (s[0] < 0) s[0] += 1; ctx.fillRect(s[0] * W, s[1] * G, 2, 2); });
+      // ground
+      ctx.strokeStyle = '#5c5c5c'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, G + .5); ctx.lineTo(W, G + .5); ctx.stroke();
+      ctx.fillStyle = '#2a2a2a'; for (let x = -(score * 8 % 24); x < W; x += 24) ctx.fillRect(x, G + 8, 10, 1);
+      // obstacles
+      obs.forEach(o => { const oy = o.fly ? G - o.h - 52 : G - o.h; ctx.strokeStyle = '#bdbdbd'; ctx.lineWidth = 1.5; ctx.strokeRect(o.x, oy, o.w, o.h); ctx.fillStyle = '#1a1a1a'; ctx.fillRect(o.x + 2, oy + 2, o.w - 4, o.h - 4); });
+      // player
+      ctx.fillStyle = dead ? '#5c5c5c' : '#f2f2f2';
+      ctx.fillRect(px, G - S - p.y, S, S);
+      ctx.fillStyle = '#0a0a0a'; ctx.fillRect(px + 13, G - S - p.y + 6, 4, 4);
+      if (dead) { ctx.fillStyle = '#f2f2f2'; ctx.font = '500 14px "Geist Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText('SEGFAULT — rebooting…', W / 2, H * .42); ctx.textAlign = 'left'; }
+      sc.textContent = 'score ' + String(Math.floor(score)).padStart(4, '0');
+    });
+  })();
+
+  /* ---------- Usua chat loop ---------- */
+  (() => {
+    const box = $('#chat');
+    const script = [
+      ['me', 'explain overfitting like I’m five'],
+      ['ai', 'It’s when a model memorises the homework answers but fails the real test.'],
+      ['me', 'and how do I stop it?'],
+      ['ai', 'More data, simpler models, regularisation, and always keep a validation set.'],
+      ['me', 'is my API key safe?'],
+      ['ai', 'Yes. It lives on the server in .env, and the browser only talks to /api/chat.'],
+    ];
+    let i = 0, timer, running = false;
+    function add(cls, html) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html; box.appendChild(d); requestAnimationFrame(() => d.classList.add('show')); while (box.children.length > 5) box.firstChild.remove(); return d; }
+    function step() {
+      if (!running) return;
+      if (i >= script.length) { i = 0; box.innerHTML = ''; }
+      const [who, text] = script[i++];
+      if (who === 'ai') {
+        const t = add('ai typing', '<i></i><i></i><i></i>');
+        timer = setTimeout(() => { t.classList.remove('typing'); t.textContent = text; timer = setTimeout(step, 1500); }, 1100);
+      } else { add('me', ''); box.lastChild.textContent = text; timer = setTimeout(step, 900); }
+    }
+    new IntersectionObserver(([e]) => { running = e.isIntersecting; clearTimeout(timer); if (running) step(); }).observe(box);
+  })();
+
+  /* ---------- terminal ---------- */
+  (() => {
+    const body = $('#termBody'), input = $('#termIn'), line = input.parentElement;
+    const L = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+    const cmds = {
+      help: () => `available commands:\n  whoami      about me\n  projects    what I've built\n  skills      languages & tools\n  experience  where I've worked\n  contact     how to reach me\n  resume      open my résumé\n  github · linkedin · date · clear\n  ...and a few hidden ones`,
+      whoami: () => `utkarsh kumar nigam\nB.Tech CSE (AI) @ Parul University, '29\nAI Intern @ InternVision Technology Pvt. Ltd.\nI like building AI things that people actually use.`,
+      projects: () => `drwxr-xr-x  nyayasetu/   judicial ops platform (SIH PS 1282)\ndrwxr-xr-x  luka/        watch gradient descent happen   ${L('https://utkarshkumarnigam-lab.github.io/LUKA/', 'live')}\ndrwxr-xr-x  aiki/        react runner, no engine          ${L('https://aiki-three.vercel.app', 'play')}\ndrwxr-xr-x  usua/        gemini chat client               ${L('https://utkarshkumarnigam-lab.github.io/Usua/', 'live')}`,
+      ls: () => cmds.projects(),
+      skills: () => `languages  python · javascript · typescript · java · c · c++ · sql\nai/ml      llm apis · rag · semantic search · ocr · agents · ml basics\nweb        fastapi · node.js · react · vite\ndata       postgresql · mongodb · redis · qdrant\ntools      git · docker · vercel`,
+      experience: () => `* sep–nov 2026  AI Intern, InternVision Technology Pvt. Ltd.\n* 2026          Smart India Hackathon (NyayaSetu)\n* 2025–2029     B.Tech CSE (AI), Parul University`,
+      contact: () => `email     ${L('mailto:utkarshkumarnigam@gmail.com', 'utkarshkumarnigam@gmail.com')}\nlinkedin  ${L('https://www.linkedin.com/in/utkarshkumarnigam/', 'in/utkarshkumarnigam')}\ngithub    ${L('https://github.com/utkarshkumarnigam-lab', 'utkarshkumarnigam-lab')}`,
+      resume: () => { open('Utkarsh_Kumar_Nigam_Resume.pdf', '_blank'); return 'opening résumé.pdf …'; },
+      github: () => { open('https://github.com/utkarshkumarnigam-lab', '_blank'); return 'opening github …'; },
+      linkedin: () => { open('https://www.linkedin.com/in/utkarshkumarnigam/', '_blank'); return 'opening linkedin …'; },
+      date: () => new Date().toString(),
+      sudo: a => a.join(' ').includes('hire') ? `[sudo] password for recruiter: ********\naccess granted ✓\n→ ${L('mailto:utkarshkumarnigam@gmail.com?subject=Let%27s%20talk', 'send the offer here')}` : `utkarsh is not in the sudoers file. try: sudo hire utkarsh`,
+      coffee: () => `error 418: I'm a teapot.\nchai is brewing instead ☕`,
+      rm: a => a.join(' ').includes('-rf') ? 'nice try.' : 'rm: missing operand',
+      exit: () => 'there is no escape. try "contact" instead.',
+      vim: () => 'you are now stuck in vim forever. (just kidding — type :q)',
+      ':q': () => 'see? easy.',
+      clear: () => { body.querySelectorAll('.o, .echo').forEach(n => n.remove()); return null; },
+    };
+    function print(html, cls = 'o') { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; body.insertBefore(d, line); }
+    function run(raw) {
+      const s = raw.trim(); print(`<span class="dimmed">utkarsh@portfolio:~$</span> ${s.replace(/</g, '&lt;')}`, 'o echo');
+      if (!s) return;
+      const [c, ...a] = s.split(/\s+/), f = cmds[c.toLowerCase()];
+      const out = f ? f(a) : `zsh: command not found: ${c.replace(/</g, '&lt;')} — try "help"`;
+      if (out) print(out);
+      body.scrollTop = body.scrollHeight;
+    }
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') { run(input.value); input.value = ''; } });
+    body.addEventListener('click', () => input.focus({ preventScroll: true }));
+    const hints = $('#hints');
+    ['help', 'whoami', 'projects', 'skills', 'sudo hire utkarsh', 'coffee'].forEach(c => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = c;
+      b.onclick = () => { run(c); input.focus({ preventScroll: true }); };
+      hints.appendChild(b);
+    });
+  })();
+
+  /* ---------- copy email ---------- */
+  $('#copy').addEventListener('click', async e => {
+    try { await navigator.clipboard.writeText('utkarshkumarnigam@gmail.com'); e.target.textContent = 'copied ✓'; }
+    catch { e.target.textContent = 'select & copy'; }
+    setTimeout(() => e.target.textContent = 'copy', 1800);
+  });
+})();
+</script>
+</body>
+</html>
